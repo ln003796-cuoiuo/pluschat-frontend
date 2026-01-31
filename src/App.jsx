@@ -10,7 +10,6 @@ import JoinGroupModal from './components/modals/JoinGroupModal';
 import BroadcastModal from './components/modals/BroadcastModal';
 import { supabase } from './services/supabase';
 import { isDeveloper } from './services/auth';
-import './styles/animations.css';
 
 function App() {
   const [user, setUser] = useState(null);
