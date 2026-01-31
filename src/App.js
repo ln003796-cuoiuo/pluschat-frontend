@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { supabase } from './services/supabase';
 import Sidebar from './components/layout/Sidebar';
 import Header from './components/layout/Header';
 import DeveloperPanel from './components/layout/DeveloperPanel';
@@ -8,32 +9,37 @@ import MessageInput from './components/chat/MessageInput';
 import Settings from './components/settings/Settings';
 import JoinGroupModal from './components/modals/JoinGroupModal';
 import BroadcastModal from './components/modals/BroadcastModal';
-import { supabase } from './services/supabase';
-import { isDeveloper } from './services/auth';
-import './styles/animations.css';
+import AuthForm from './components/auth/AuthForm';
+import './App.css';
 
 function App() {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [activeSection, setActiveSection] = useState('chats');
   const [showDeveloperPanel, setShowDeveloperPanel] = useState(false);
   const [showJoinGroupModal, setShowJoinGroupModal] = useState(false);
   const [showBroadcastModal, setShowBroadcastModal] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // Проверка аутентификации
+  // Проверка сессии при запуске
   useEffect(() => {
-    const checkUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setUser(session?.user ?? null);
+    const checkSession = async () => {
+      setLoading(true);
+      const { data, error } = await supabase.auth.getSession();
+      if (error) console.error('Session error:', error);
+      setUser(data.session?.user || null);
       setLoading(false);
     };
     
-    checkUser();
+    checkSession();
     
     // Слушатель изменений сессии
-    supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
+    const { subscription } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user || null);
+      }
+    );
+    
+    return () => subscription.unsubscribe();
   }, []);
 
   if (loading) {
@@ -52,11 +58,17 @@ function App() {
     );
   }
 
+  // Если пользователь не авторизован, показываем форму аутентификации
   if (!user) {
-    return <LoginScreen />;
+    return (
+      <div className="auth-container">
+        <AuthForm onAuthSuccess={setUser} />
+      </div>
+    );
   }
 
-  const developerMode = isDeveloper(user);
+  // Если пользователь авторизован, показываем мессенджер
+  const developerMode = user?.email === 'lysakov.kolyan@yandex.ru';
 
   return (
     <Router>
@@ -112,47 +124,6 @@ function App() {
         )}
       </div>
     </Router>
-  );
-}
-
-// Экран входа
-function LoginScreen() {
-  const handleLogin = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: window.location.origin
-      }
-    });
-    
-    if (error) console.error('Error:', error);
-  };
-
-  return (
-    <div className="login-screen">
-      <div className="login-card">
-        <div className="logo">
-          <span style={{ fontSize: '48px', background: 'linear-gradient(90deg, #00F3FF, #FFD700)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-            💬
-          </span>
-          <h1>PlusChat</h1>
-        </div>
-        
-        <p className="tagline">Киберпанк-мессенджер с абсолютной приватностью</p>
-        
-        <button className="login-btn" onClick={handleLogin}>
-          <span>🔐</span>
-          Войти через Google
-        </button>
-
-        <div className="demo-mode">
-          <p>Для демонстрации используйте тестовый аккаунт:</p>
-          <button className="demo-btn" onClick={() => window.location.reload()}>
-            Режим разработчика (lysakov.kolyan@yandex.ru)
-          </button>
-        </div>
-      </div>
-    </div>
   );
 }
 
