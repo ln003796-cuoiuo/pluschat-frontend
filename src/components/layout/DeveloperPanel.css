@@ -1,0 +1,375 @@
+.developer-panel-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  z-index: 9999;
+  animation: slideInRight 0.4s ease;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.developer-panel {
+  width: 420px;
+  height: 100vh;
+  background: rgba(30, 20, 10, 0.95);
+  backdrop-filter: blur(32px);
+  border-left: 2px solid rgba(255, 215, 0, 0.5);
+  box-shadow: -10px 0 60px rgba(255, 215, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  animation: panelGlow 3s ease-in-out infinite;
+}
+
+@keyframes panelGlow {
+  0%, 100% {
+    box-shadow: -10px 0 60px rgba(255, 215, 0, 0.3);
+  }
+  50% {
+    box-shadow: -10px 0 80px rgba(255, 215, 0, 0.5);
+  }
+}
+
+.panel-header {
+  padding: 25px 25px 20px;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.panel-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.panel-icon {
+  font-size: 32px;
+  animation: crownSpin 4s linear infinite;
+}
+
+@keyframes crownSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.panel-title h2 {
+  color: #FFD700;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+}
+
+.close-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  color: #FFD700;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-btn:hover {
+  background: rgba(255, 215, 0, 0.2);
+  transform: rotate(90deg);
+}
+
+.panel-content {
+  padding: 25px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.panel-section {
+  margin-bottom: 30px;
+}
+
+.section-label {
+  color: #FFD700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 18px;
+  font-weight: 600;
+}
+
+.action-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.action-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  border-radius: 16px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.action-card:hover {
+  background: rgba(255, 215, 0, 0.15);
+  border-color: rgba(255, 215, 0, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+}
+
+.action-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.action-title {
+  color: white;
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 6px;
+}
+
+.action-desc {
+  color: #aaa;
+  font-size: 12px;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.metric-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.metric-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #FFD700;
+  margin-bottom: 4px;
+}
+
+.metric-label {
+  color: #aaa;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.metric-trend {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.metric-trend.positive {
+  color: #00FF88;
+}
+
+.sessions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.session-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.session-icon {
+  font-size: 24px;
+  min-width: 30px;
+}
+
+.session-info {
+  flex: 1;
+}
+
+.session-name {
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.session-location {
+  color: #777;
+  font-size: 12px;
+}
+
+.session-btn {
+  background: rgba(255, 68, 68, 0.2);
+  color: #FF4444;
+  border: 1px solid rgba(255, 68, 68, 0.3);
+  padding: 6px 15px;
+  border-radius: 8px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.session-btn:hover {
+  background: rgba(255, 68, 68, 0.4);
+}
+
+.status-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+}
+
+.status-icon {
+  font-size: 24px;
+  color: #00FF88;
+  min-width: 30px;
+}
+
+.status-info {
+  flex: 1;
+}
+
+.status-name {
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.status-detail {
+  color: #777;
+  font-size: 12px;
+}
+
+.panel-footer {
+  padding: 20px 25px;
+  border-top: 1px solid rgba(255, 215, 0, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(20, 15, 10, 0.5);
+}
+
+.developer-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dev-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #00F3FF, #00BFFF);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 18px;
+  color: #050505;
+  border: 2px solid #FFD700;
+}
+
+.dev-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.dev-name {
+  color: #FFD700;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.dev-email {
+  color: #777;
+  font-size: 12px;
+}
+
+.panel-close-btn {
+  background: linear-gradient(90deg, #FFD700, #FFA500);
+  color: #050505;
+  padding: 10px 25px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.panel-close-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(255, 215, 0, 0.5);
+}
+
+/* Скроллбар */
+.panel-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.panel-content::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.panel-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 215, 0, 0.3);
+  border-radius: 4px;
+}
+
+.panel-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 215, 0, 0.5);
+}
+
+@media (max-width: 480px) {
+  .developer-panel {
+    width: 100%;
+  }
+  
+  .action-grid,
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}
