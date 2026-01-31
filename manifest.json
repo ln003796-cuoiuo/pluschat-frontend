@@ -1,0 +1,16 @@
+{
+  "name": "PlusChat",
+  "short_name": "PlusChat",
+  "description": "Киберпанк-мессенджер с приватностью и стилем",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#00F3FF",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ]
+}
