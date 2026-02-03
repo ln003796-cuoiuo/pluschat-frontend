@@ -1,3 +1,4 @@
+
 // ========== ИНИЦИАЛИЗАЦИЯ SUPABASE ==========
 const supabaseUrl = 'https://pfwevfihobzbecgrayqr.supabase.co';
 const supabaseAnonKey = 'sb_publishable_Hvs4wm7b46wg2KTc5S9vQg_9Do_TpbV';
