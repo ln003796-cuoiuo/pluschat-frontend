@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Обработка входа...</title>
+  <style>
+    body {
+      background: #050505;
+      color: #00F3FF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: sans-serif;
+    }
+    .loading {
+      text-align: center;
+    }
+    .spinner {
+      font-size: 48px;
+      margin-bottom: 20px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="loading">
+    <div class="spinner">💬</div>
+    <h2>Обработка входа...</h2>
+    <p>Пожалуйста, подождите...</p>
+  </div>
+  
+  <script>
+    // Перенаправляем на главную страницу после короткой задержки
+    setTimeout(() => {
+      window.location.href = '/';
+    }, 100);
+  </script>
+</body>
+</html>
