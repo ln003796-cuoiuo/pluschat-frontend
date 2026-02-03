@@ -1,7 +1,8 @@
 // ========== ИНИЦИАЛИЗАЦИЯ SUPABASE ==========
 const supabaseUrl = 'https://pfwevfihobzbecgrayqr.supabase.co';
 const supabaseAnonKey = 'sb_publishable_Hvs4wm7b46wg2KTc5S9vQg_9Do_TpbV';
-const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
+const { createClient } = supabase;
+const supabaseClient = createClient(supabaseUrl, supabaseAnonKey);
 
 // ========== ЭЛЕМЕНТЫ ИНТЕРФЕЙСА ==========
 const authScreen = document.getElementById('auth-screen');
@@ -21,7 +22,7 @@ async function signInWithGoogle() {
     googleBtn.disabled = true;
     googleBtn.innerHTML = '<span>Перенаправление...</span>';
     
-    const { error } = await supabase.auth.signInWithOAuth({
+    const { error } = await supabaseClient.auth.signInWithOAuth({
       provider: 'google',
       options: {
         redirectTo: 'https://ln003796-cuoiuo-plus-qy4y.bolt.host/auth/callback',
@@ -48,10 +49,9 @@ async function signInWithGoogle() {
 // ========== ФУНКЦИЯ ВЫХОДА ==========
 async function signOut() {
   try {
-    const { error } = await supabase.auth.signOut();
+    const { error } = await supabaseClient.auth.signOut();
     if (error) throw error;
     
-    // Скрываем профиль, показываем экран входа
     profileScreen.style.display = 'none';
     authScreen.style.display = 'flex';
   } catch (error) {
@@ -70,7 +70,7 @@ function showError(message) {
 
 // ========== ПРОВЕРКА СЕССИИ ==========
 async function checkSession() {
-  const { data: { session }, error } = await supabase.auth.getSession();
+  const {  { session }, error } = await supabaseClient.auth.getSession();
   
   if (error) {
     console.error('Session error:', error);
@@ -80,12 +80,10 @@ async function checkSession() {
   if (session?.user) {
     showProfile(session.user);
   } else {
-    // Проверяем, является ли это callback после входа через Google
     if (window.location.pathname === '/auth/callback') {
       setTimeout(async () => {
-        const { data: { session: newSession } } = await supabase.auth.getSession();
+        const {  { session: newSession } } = await supabaseClient.auth.getSession();
         if (newSession?.user) {
-          // Убираем /auth/callback из адресной строки
           window.history.replaceState({}, document.title, '/');
           showProfile(newSession.user);
         } else {
@@ -100,13 +98,9 @@ async function checkSession() {
 
 // ========== ОТОБРАЖЕНИЕ ПРОФИЛЯ ==========
 function showProfile(user) {
-  // Скрываем экран входа
   authScreen.style.display = 'none';
-  
-  // Показываем профиль
   profileScreen.style.display = 'flex';
   
-  // Заполняем данные
   const name = user.user_metadata?.full_name || user.email.split('@')[0];
   const firstLetter = name.charAt(0).toUpperCase();
   
@@ -114,7 +108,6 @@ function showProfile(user) {
   emailEl.textContent = user.email;
   avatarEl.textContent = firstLetter;
   
-  // Проверяем администратора
   if (user.email === 'lysakov.kolyan@yandex.ru') {
     avatarEl.style.boxShadow = '0 0 40px rgba(255, 215, 0, 0.9)';
     avatarEl.style.border = '4px solid #FFD700';
@@ -124,8 +117,13 @@ function showProfile(user) {
 }
 
 // ========== ОБРАБОТЧИКИ СОБЫТИЙ ==========
-googleBtn.addEventListener('click', signInWithGoogle);
-logoutBtn.addEventListener('click', signOut);
+if (googleBtn) {
+  googleBtn.addEventListener('click', signInWithGoogle);
+}
+
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', signOut);
+}
 
 // Запуск при загрузке
 document.addEventListener('DOMContentLoaded', checkSession);
